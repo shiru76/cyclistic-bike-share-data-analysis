@@ -1,1 +1,2 @@
-# Cyclistic-Bike-Share-Data-Analysis
+# Cyclistic Bike-Share Data Analysis
+This case study analyzed the Cyclistic dataset.
