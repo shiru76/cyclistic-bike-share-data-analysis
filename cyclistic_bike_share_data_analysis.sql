@@ -15,6 +15,7 @@ CREATE TABLE cyclistic_tripdata (
 	member_casual NVARCHAR(255)
 )
 
+-- Insert the data to one table
 INSERT INTO cyclistic_tripdata
 SELECT *
 FROM CyclisticDatabase..tripdata_202204
@@ -65,23 +66,30 @@ DROP COLUMN end_lat
 ALTER TABLE cyclistic_tripdata
 DROP COLUMN end_lng
 
---DELETE FROM cyclistic_tripdata
---WHERE start_station_name IS NULL OR end_station_name IS NULL
+DELETE FROM cyclistic_tripdata
+WHERE 
+	start_station_name IS NULL OR 
+	start_station_id IS NULL OR
+	end_station_name IS NULL OR
+	end_station_id IS NULL
+
+SELECT *
+FROM cyclistic_tripdata
 
 -- Number of cyclist with membership
 SELECT 
 	member_casual, 
 	COUNT(*) AS total_num_of_membership
-FROM cyclistic_tripdata
+FROM CyclisticDatabase..cyclistic_tripdata
 GROUP BY member_casual
 
 -- Ride length of cyclist
-SELECT 
+SELECT TOP 10
 	member_casual,
 	started_at, 
 	ended_at, 
 	DATEDIFF(MINUTE, started_at, ended_at) AS ride_length
-FROM cyclistic_tripdata 
+FROM CyclisticDatabase..cyclistic_tripdata 
 ORDER BY ride_length DESC
 
 -- Average ride length per membership
@@ -94,7 +102,7 @@ ORDER BY ave_ride_length DESC
 
 -- Number of cyclist per month
 SELECT 
-	DATENAME(MONTH, ended_at) AS trip_month, 
+	CONCAT(DATENAME(MONTH, started_at), ' ', YEAR(started_at)) AS trip_month, 
 	COUNT(*) AS num_of_users,
 	COUNT(
 		CASE 
@@ -110,13 +118,16 @@ SELECT
 	) AS num_of_casual
 FROM cyclistic_tripdata
 GROUP BY 
-	DATENAME(MONTH, ended_at),
-	MONTH(ended_at)
-ORDER BY MONTH(ended_at)
+	DATENAME(MONTH, started_at),
+	YEAR(started_at),
+	MONTH(started_at)
+ORDER BY 
+	YEAR(started_at), 
+	MONTH(started_at)
 
 -- Average ride length per month per membership
 SELECT 
-	DATENAME(MONTH, ended_at) AS trip_month, 
+	CONCAT(DATENAME(MONTH, started_at), ' ', YEAR(started_at)) AS trip_month, 
 	AVG(DATEDIFF(MINUTE, started_at, ended_at)) AS ave_ride_length,
 	AVG(
 		CASE 
@@ -132,9 +143,12 @@ SELECT
 	) AS ave_ride_length_casual
 FROM cyclistic_tripdata
 GROUP BY 
-	DATENAME(MONTH, ended_at),
-	MONTH(ended_at)
-ORDER BY  MONTH(ended_at)
+	DATENAME(MONTH, started_at),
+	YEAR(started_at),
+	MONTH(started_at)
+ORDER BY 
+	YEAR(started_at),
+	MONTH(started_at)
 
 -- Number of cyclist per day
 SELECT 
@@ -180,7 +194,7 @@ GROUP BY
 	DATEPART(WEEKDAY, ended_at)
 ORDER BY DATEPART(WEEKDAY, ended_at)
 
--- Number of cyclist per station
+-- Top 10 stations with the highest number of cyclists
 SELECT TOP 10
 	station_tbl.station_name,
 	SUM(station_tbl.num_of_cyclist) AS num_of_cyclist,
@@ -228,3 +242,58 @@ FROM (
 WHERE station_tbl.station_name IS NOT NULL
 GROUP BY station_tbl.station_name
 ORDER BY num_of_cyclist DESC
+
+-- Top 10 stations with the highest number of casual cyclists
+SELECT TOP 10
+	station_tbl.station_name,
+	SUM(station_tbl.num_of_casual) AS num_of_casual
+FROM (
+	SELECT 
+		start_station_name AS station_name,
+		COUNT(
+			CASE 
+				WHEN member_casual = 'casual' THEN 1
+				ELSE NULL
+			END
+		) AS num_of_casual
+	FROM cyclistic_tripdata
+	GROUP BY 
+		start_station_name
+	UNION
+	SELECT 
+		end_station_name,
+		COUNT(
+			CASE 
+				WHEN member_casual = 'casual' THEN 1
+				ELSE NULL
+			END
+		) AS num_of_casual
+	FROM cyclistic_tripdata
+	GROUP BY 
+		end_station_name
+) AS station_tbl
+WHERE station_tbl.station_name IS NOT NULL
+GROUP BY station_tbl.station_name
+ORDER BY num_of_casual DESC
+
+-- Number of cyclists per bike category
+SELECT 
+	rideable_type AS bike_category,
+	COUNT(*) AS num_of_cyclist,
+	COUNT(
+		CASE 
+			WHEN member_casual = 'member' THEN 1
+			ELSE NULL
+		END
+	) AS num_of_member,
+	COUNT(
+		CASE 
+			WHEN member_casual = 'casual' THEN 1
+			ELSE NULL
+		END
+	) AS num_of_casual
+FROM cyclistic_tripdata
+GROUP BY 
+	rideable_type
+ORDER BY num_of_cyclist DESC
+
