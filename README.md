@@ -14,7 +14,7 @@ Additionally, these are the three questions that will guide the future marketing
 
 1. How do annual members and casual riders use Cyclistic bikes differently?
 2. Why would casual riders buy Cyclistic annual memberships?
-3. How can Cyclistic use digital media to influence casual riders to become members
+3. How can Cyclistic use digital media to influence casual riders to become members?
 
 ## 📝 Data Preparation
 In this case study, I used the Cyclistic dataset from April 2022 to March 2023 that can be found [here](https://divvy-tripdata.s3.amazonaws.com/index.html). The data is stored in 12 CSV files separated by different months.
