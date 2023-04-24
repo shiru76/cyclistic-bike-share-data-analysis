@@ -52,7 +52,7 @@ Based on the gathered data, casual cyclists are more likely to ride a bike longe
 1. Advertise annual membership before the weekend, and before June and July.
 2. Place the advertisement about annual membership in the top stations of casual cyclists.
 3. Consider providing annual membership discounts to casual cyclists.
-4. Since most casual cyclist are using electric bike, consider creating an electric bike event where the annual membership can also be promoted. 
+4. Since most casual cyclists are using electric bike, consider creating an electric bike event where the annual membership can also be promoted. 
 
 ## 🛠 Skills
 SQL, Excel, and Tableau
