@@ -42,7 +42,8 @@ After cleaning the data, I queried the data to answer the following questions:
 7. What are the top 10 stations with the highest number of casual cyclists? 
 
 ## 📊 Presentation
-I created the data visualization using Tableau. The dashboard can be found [here](https://public.tableau.com/app/profile/iron.lao/viz/CyclisticBike-ShareDashboard_16821753709830/CyclisticBike-ShareDashboard?publish=yes).
+Since I only had Tableau Public, I queried the data from MS SQL and loaded it into Excel. Then, I connected Excel to Tableau Public to create data visualization.
+The dashboard can be found [here](https://public.tableau.com/app/profile/iron.lao/viz/CyclisticBike-ShareDashboard_16821753709830/CyclisticBike-ShareDashboard?publish=yes).
 
 ## 💡 Conclusion and Recommendation
 Based on the gathered data, casual cyclists are more likely to ride a bike longer than the member cyclists. They are usually active on weekends, and in June and July. Casual cyclist prefers using electric bike than the other types of bikes. The top 5 stations of casual cyclists are Street Dr. & Grand Ave., DuSable Lake Shore Dr. & Monroe St., Millennium Park, Michigan Ave. & Oak St., and DuSable Lake Shore Dr. & North Blvd.
@@ -51,3 +52,6 @@ Based on the gathered data, casual cyclists are more likely to ride a bike longe
 1. Advertise annual membership before the weekend, and before June and July.
 2. Place the advertisement in the top stations of casual cyclists.
 3. Consider providing annual membership discounts to casual cyclists.
+
+## 🛠 Skills
+SQL, Excel, and Tableau
